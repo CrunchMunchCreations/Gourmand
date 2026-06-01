@@ -1,0 +1,32 @@
+{
+    "schemaVersion": 1,
+    "id": "gourmand",
+    "version": "${version}",
+    "name": "Gourmand",
+    "description": "A utility mod library for improved handling of certain server-side content on the client-side.",
+    "authors": [
+        "BluSpring",
+        "CrunchMunch Creations"
+    ],
+    "contact": {
+        "sources": "https://github.com/CrunchMunchCreations/Gourmand"
+    },
+    "license": "MIT",
+    "icon": "assets/gourmand/icon.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "xyz.crunchmunch.mods.gourmand.Gourmand"
+        ]
+    },
+    "mixins": [
+        "gourmand.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": ">=${loader_version}",
+        "fabric-language-kotlin": ">=${kotlin_loader_version}",
+        "fabric-api": "*",
+        "minecraft": "~26.1"
+    },
+    "accessWidener": "gourmand.accesswidener"
+}
