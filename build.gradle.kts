@@ -4,7 +4,7 @@ plugins {
     `maven-publish`
 }
 
-group = "xyz.crunchmunch"
+group = "xyz.crunchmunch.mods"
 version = "1.0.0"
 
 base {
@@ -40,6 +40,7 @@ tasks {
             "loader_version" to libs.versions.fabric.loader.get(),
             "fabric_version" to libs.versions.fabric.api.get(),
             "minecraft_version" to libs.versions.minecraft.get(),
+            "kotlin_loader_version" to libs.versions.fabric.kotlin.get(),
         )
         inputs.properties(props)
         filesMatching("fabric.mod.json") {
