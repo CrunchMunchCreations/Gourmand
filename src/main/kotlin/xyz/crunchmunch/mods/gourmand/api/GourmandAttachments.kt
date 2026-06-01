@@ -1,5 +1,6 @@
 package xyz.crunchmunch.mods.gourmand.api
 
+import com.mojang.serialization.Codec
 import io.netty.buffer.ByteBuf
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry
 import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate
@@ -18,6 +19,7 @@ object GourmandAttachments {
 
     @JvmField val MOD_IDS: AttachmentType<Map<String, String>> = AttachmentRegistry.create(Gourmand.id("mod_ids")) { builder ->
         builder.copyOnDeath()
+            .persistent(Codec.unboundedMap(Codec.STRING, Codec.STRING))
     }
 
     @JvmStatic
