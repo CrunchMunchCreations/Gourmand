@@ -16,6 +16,10 @@ object GourmandAttachments {
                 .apply(ResourceKey.streamCodec(GourmandRegistryKeys.BEHAVIOR)), AttachmentSyncPredicate.all())
     }
 
+    @JvmField val MOD_IDS: AttachmentType<Map<String, String>> = AttachmentRegistry.create(Gourmand.id("mod_ids")) { builder ->
+        builder.copyOnDeath()
+    }
+
     @JvmStatic
     fun init() {}
 }

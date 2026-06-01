@@ -17,6 +17,9 @@
     "entrypoints": {
         "main": [
             "xyz.crunchmunch.mods.gourmand.Gourmand"
+        ],
+        "client": [
+            "xyz.crunchmunch.mods.gourmand.client.GourmandClient"
         ]
     },
     "mixins": [

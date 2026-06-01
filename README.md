@@ -3,6 +3,11 @@ A utility mod library for improved handling of certain server-side content on th
 Used in CrunchMunch Creations' events such as Chrunchy Christmas for reduced ping disadvantages in
 minigames such as Mace Race.
 
+## Features
+- Shared client and server side behaviors for reduced ping disadvantage
+- Disabling certain block neighbor updates
+- Mod reporting to the server
+
 ## Why not use Noxesium?
 [Noxesium is painful to support for in server-side Fabric](https://github.com/CrunchMunchCreations/NoxesiumFabricServer). It's easier for us if we have our own tooling. Additionally,
 we won't have to wait for Noxesium updates unlike last time, where we implemented our Noxesium support
