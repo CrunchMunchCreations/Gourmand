@@ -35,7 +35,7 @@ class Gourmand : ModInitializer {
         DynamicRegistries.registerSynced(GourmandRegistryKeys.BEHAVIOR, TriggerableEntityBehavior.CODEC)
 
         // Network packets
-        PayloadTypeRegistry.serverboundPlay().registerLarge(ModListPacket.TYPE, ModListPacket.CODEC, -1)
+        PayloadTypeRegistry.serverboundPlay().registerLarge(ModListPacket.TYPE, ModListPacket.CODEC, 1_000_000)
         PayloadTypeRegistry.clientboundPlay().register(IgnoredBlockUpdateListPacket.TYPE, IgnoredBlockUpdateListPacket.CODEC)
 
         ServerPlayNetworking.registerGlobalReceiver(ModListPacket.TYPE) { packet, ctx ->
