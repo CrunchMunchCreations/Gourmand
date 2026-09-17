@@ -3,11 +3,13 @@ package xyz.crunchmunch.mods.gourmand.behavior
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
+import net.minecraft.util.Mth
 import net.minecraft.util.StringRepresentable
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.phys.Vec3
 import xyz.crunchmunch.mods.gourmand.api.behavior.EntityBehavior
+
 
 data class EntityVelocityBehavior(
     val velocity: Vec3,
@@ -55,7 +57,24 @@ data class EntityVelocityBehavior(
         // Based on Apoli's Space - https://github.com/BluSpring/Apoli-Legacy/blob/versions/1.21.11/src/main/java/io/github/apace100/apoli/util/Space.java
         enum class TransformSpace(private val serialized: String, val transformSpaceToGlobal: (Vec3, Entity) -> Vec3) : StringRepresentable {
             WORLD("world", { vector, _ -> vector }),
-            LOCAL("local", { vector, entity -> Vec3.applyLocalCoordinatesToRotation(entity.rotationVector, vector) })
+            LOCAL("local", { direction, entity ->
+                val rotation = entity.rotationVector
+
+                val yCos = Mth.cos(((rotation.y + 90.0f) * Mth.DEG_TO_RAD).toDouble())
+                val ySin = Mth.sin(((rotation.y + 90.0f) * Mth.DEG_TO_RAD).toDouble())
+                val xCos = Mth.cos((-rotation.x * Mth.DEG_TO_RAD).toDouble())
+                val xSin = Mth.sin((-rotation.x * Mth.DEG_TO_RAD).toDouble())
+                val xCosUp = Mth.cos(((-rotation.x + 90.0f) * Mth.DEG_TO_RAD).toDouble())
+                val xSinUp = Mth.sin(((-rotation.x + 90.0f) * Mth.DEG_TO_RAD).toDouble())
+                val forwards = Vec3((yCos * xCos).toDouble(), xSin.toDouble(), (ySin * xCos).toDouble())
+                val up = Vec3((yCos * xCosUp).toDouble(), xSinUp.toDouble(), (ySin * xCosUp).toDouble())
+                val left = forwards.cross(up).scale(-1.0)
+                val xa = forwards.x * direction.z + up.x * direction.y + left.x * direction.x
+                val ya = forwards.y * direction.z + up.y * direction.y + left.y * direction.x
+                val za = forwards.z * direction.z + up.z * direction.y + left.z * direction.x
+
+                Vec3(xa, ya, za)
+            })
             ;
 
             override fun getSerializedName(): String = this.serialized
