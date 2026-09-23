@@ -12,7 +12,7 @@ import xyz.crunchmunch.mods.gourmand.api.behavior.EntityBehavior
 
 data class EntityVelocityBehavior(
     val velocity: Vec3,
-    val type: Type,
+    val mode: Mode,
     val transformSpace: TransformSpace,
 ) : EntityBehavior {
     override fun handle(
@@ -20,10 +20,10 @@ data class EntityVelocityBehavior(
         interactingEntity: LivingEntity
     ) {
         val velocity = this.transformSpace.transformSpaceToGlobal(this.velocity, interactingEntity)
-        when (this.type) {
-            Type.ADD -> interactingEntity.deltaMovement = interactingEntity.deltaMovement.add(velocity)
-            Type.MULTIPLY -> interactingEntity.deltaMovement = interactingEntity.deltaMovement.multiply(velocity)
-            Type.SET -> interactingEntity.deltaMovement = velocity
+        when (this.mode) {
+            Mode.ADD -> interactingEntity.deltaMovement = interactingEntity.deltaMovement.add(velocity)
+            Mode.MULTIPLY -> interactingEntity.deltaMovement = interactingEntity.deltaMovement.multiply(velocity)
+            Mode.SET -> interactingEntity.deltaMovement = velocity
         }
     }
 
@@ -34,8 +34,8 @@ data class EntityVelocityBehavior(
             instance.group(
                 Vec3.CODEC.fieldOf("velocity")
                     .forGetter(EntityVelocityBehavior::velocity),
-                Type.CODEC.optionalFieldOf("type", Type.ADD)
-                    .forGetter(EntityVelocityBehavior::type),
+                Mode.CODEC.optionalFieldOf("type", Mode.ADD)
+                    .forGetter(EntityVelocityBehavior::mode),
                 TransformSpace.CODEC.optionalFieldOf("transform_space", TransformSpace.WORLD)
                     .forGetter(EntityVelocityBehavior::transformSpace)
             )
@@ -43,14 +43,14 @@ data class EntityVelocityBehavior(
         }
     }
 
-    enum class Type(private val serialized: String) : StringRepresentable {
+    enum class Mode(private val serialized: String) : StringRepresentable {
         ADD("add"), MULTIPLY("multiply"), SET("set"),
         ;
 
         override fun getSerializedName(): String = this.serialized
 
         companion object {
-            @JvmField val CODEC: Codec<Type> = StringRepresentable.fromValues(Type::values)
+            @JvmField val CODEC: Codec<Mode> = StringRepresentable.fromValues(Mode::values)
         }
     }
 
