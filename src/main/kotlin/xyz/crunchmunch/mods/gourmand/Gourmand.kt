@@ -25,6 +25,7 @@ import xyz.crunchmunch.mods.gourmand.api.GourmandRegistryKeys
 import xyz.crunchmunch.mods.gourmand.api.IgnoredBlockUpdateRegistry
 import xyz.crunchmunch.mods.gourmand.api.behavior.TriggerableEntityBehavior
 import xyz.crunchmunch.mods.gourmand.api.behavior.trigger.BehaviorTriggerTypes
+import xyz.crunchmunch.mods.gourmand.api.impl.behavior.GourmandBehaviorTypes
 import xyz.crunchmunch.mods.gourmand.api.impl.predicate.HasEntityTagPredicate
 import xyz.crunchmunch.mods.gourmand.network.clientbound.IgnoredBlockUpdateListPacket
 import xyz.crunchmunch.mods.gourmand.network.serverbound.ModListPacket
@@ -33,6 +34,7 @@ class Gourmand : ModInitializer {
     override fun onInitialize() {
         GourmandRegistries.init()
         GourmandAttachments.init()
+        GourmandBehaviorTypes.init()
 
         // Dynamic registries
         DynamicRegistries.registerSynced(GourmandRegistryKeys.BEHAVIOR, TriggerableEntityBehavior.CODEC)
