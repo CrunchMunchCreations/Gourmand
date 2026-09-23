@@ -33,8 +33,8 @@ import xyz.crunchmunch.mods.gourmand.network.serverbound.ModListPacket
 class Gourmand : ModInitializer {
     override fun onInitialize() {
         GourmandRegistries.init()
-        GourmandAttachments.init()
         GourmandBehaviorTypes.init()
+        GourmandAttachments.init()
 
         // Dynamic registries
         DynamicRegistries.registerSynced(GourmandRegistryKeys.BEHAVIOR, TriggerableEntityBehavior.CODEC)

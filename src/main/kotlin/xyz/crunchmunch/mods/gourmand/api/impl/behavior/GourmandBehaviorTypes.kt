@@ -14,5 +14,6 @@ object GourmandBehaviorTypes {
         return Registry.register(GourmandRegistries.BEHAVIOR_TYPE, Gourmand.id(name), codec)
     }
 
+    @JvmStatic
     fun init() {}
 }
