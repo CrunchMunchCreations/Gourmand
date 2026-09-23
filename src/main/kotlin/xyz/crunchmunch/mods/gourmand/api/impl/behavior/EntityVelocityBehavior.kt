@@ -34,7 +34,7 @@ data class EntityVelocityBehavior(
             instance.group(
                 Vec3.CODEC.fieldOf("velocity")
                     .forGetter(EntityVelocityBehavior::velocity),
-                Mode.CODEC.optionalFieldOf("type", Mode.ADD)
+                Mode.CODEC.optionalFieldOf("mode", Mode.ADD)
                     .forGetter(EntityVelocityBehavior::mode),
                 TransformSpace.CODEC.optionalFieldOf("transform_space", TransformSpace.WORLD)
                     .forGetter(EntityVelocityBehavior::transformSpace)
