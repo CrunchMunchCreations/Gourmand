@@ -14,6 +14,8 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking
 import net.minecraft.commands.Commands
 import net.minecraft.commands.arguments.EntityArgument
 import net.minecraft.commands.arguments.ResourceKeyArgument
+import net.minecraft.core.Registry
+import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.Identifier
 import net.minecraft.world.InteractionResult
@@ -21,8 +23,9 @@ import xyz.crunchmunch.mods.gourmand.api.GourmandAttachments
 import xyz.crunchmunch.mods.gourmand.api.GourmandRegistries
 import xyz.crunchmunch.mods.gourmand.api.GourmandRegistryKeys
 import xyz.crunchmunch.mods.gourmand.api.IgnoredBlockUpdateRegistry
-import xyz.crunchmunch.mods.gourmand.api.behavior.BehaviorTriggers
 import xyz.crunchmunch.mods.gourmand.api.behavior.TriggerableEntityBehavior
+import xyz.crunchmunch.mods.gourmand.api.behavior.trigger.BehaviorTriggerTypes
+import xyz.crunchmunch.mods.gourmand.api.impl.predicate.HasEntityTagPredicate
 import xyz.crunchmunch.mods.gourmand.network.clientbound.IgnoredBlockUpdateListPacket
 import xyz.crunchmunch.mods.gourmand.network.serverbound.ModListPacket
 
@@ -37,6 +40,9 @@ class Gourmand : ModInitializer {
         // Network packets
         PayloadTypeRegistry.serverboundPlay().registerLarge(ModListPacket.TYPE, ModListPacket.CODEC, 1_000_000)
         PayloadTypeRegistry.clientboundPlay().register(IgnoredBlockUpdateListPacket.TYPE, IgnoredBlockUpdateListPacket.CODEC)
+
+        // Custom stuff
+        Registry.register(BuiltInRegistries.ENTITY_SUB_PREDICATE_TYPE, id("has_entity_tag"), HasEntityTagPredicate.CODEC)
 
         ServerPlayNetworking.registerGlobalReceiver(ModListPacket.TYPE) { packet, ctx ->
             ctx.player().setAttached(GourmandAttachments.MOD_IDS, packet.modIdsToVersions)
@@ -161,12 +167,12 @@ class Gourmand : ModInitializer {
         }
 
         AttackEntityCallback.EVENT.register { player, _, _, entity, _ ->
-            BehaviorTriggers.triggerBehaviors(entity, player, BehaviorTriggers.ATTACK)
+            BehaviorTriggerTypes.triggerBehaviors(entity, player, BehaviorTriggerTypes.ATTACK)
             InteractionResult.PASS
         }
 
         UseEntityCallback.EVENT.register { player, _, _, entity, _ ->
-            BehaviorTriggers.triggerBehaviors(entity, player, BehaviorTriggers.INTERACT)
+            BehaviorTriggerTypes.triggerBehaviors(entity, player, BehaviorTriggerTypes.INTERACT)
             InteractionResult.PASS
         }
     }

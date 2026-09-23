@@ -1,4 +1,4 @@
-package xyz.crunchmunch.mods.gourmand.behavior
+package xyz.crunchmunch.mods.gourmand.api.impl.behavior
 
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
@@ -19,7 +19,15 @@ data class EntityEffectBehavior(
     val shouldShowIcon: Boolean,
 ) : EntityBehavior {
     override fun handle(interactedEntity: Entity, interactingEntity: LivingEntity) {
-        interactingEntity.addEffect(MobEffectInstance(this.effect, this.durationTicks, this.amplifier, this.isAmbient, !this.isHidden, this.shouldShowIcon), interactedEntity)
+        interactingEntity.addEffect(
+            MobEffectInstance(
+                this.effect,
+                this.durationTicks,
+                this.amplifier,
+                this.isAmbient,
+                !this.isHidden,
+                this.shouldShowIcon
+            ), interactedEntity)
     }
 
     override val codec: MapCodec<out EntityBehavior> = CODEC

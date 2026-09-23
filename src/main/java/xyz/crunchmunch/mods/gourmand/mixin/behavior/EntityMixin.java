@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import xyz.crunchmunch.mods.gourmand.api.behavior.BehaviorTriggers;
+import xyz.crunchmunch.mods.gourmand.api.behavior.trigger.BehaviorTriggerTypes;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -24,7 +24,7 @@ public abstract class EntityMixin implements AttachmentTarget {
     private void checkCollidingEntities(CallbackInfo ci) {
         var self = (Entity) (Object) this;
 
-        if (BehaviorTriggers.hasAnyTrigger(self, BehaviorTriggers.ENTITY_INSIDE, BehaviorTriggers.JUMP_INSIDE, BehaviorTriggers.MOVE_INSIDE)) {
+        if (BehaviorTriggerTypes.hasAnyTrigger(self, BehaviorTriggerTypes.ENTITY_INSIDE, BehaviorTriggerTypes.JUMP_INSIDE, BehaviorTriggerTypes.MOVE_INSIDE)) {
             var entities = this.level().getEntities(self, this.getBoundingBox().inflate(1e-7), entity -> entity instanceof LivingEntity);
             if (entities.isEmpty())
                 return;
@@ -32,16 +32,16 @@ public abstract class EntityMixin implements AttachmentTarget {
             for (Entity entity : entities) {
                 if (entity instanceof LivingEntity living) {
                     // trigger entity inside first
-                    BehaviorTriggers.triggerBehaviors(self, living, BehaviorTriggers.ENTITY_INSIDE);
+                    BehaviorTriggerTypes.triggerBehaviors(self, living, BehaviorTriggerTypes.ENTITY_INSIDE);
 
                     // trigger jump
                     if ((living instanceof ServerPlayer player && player.getLastClientInput().jump()) || living.isJumping()) {
-                        BehaviorTriggers.triggerBehaviors(self, living, BehaviorTriggers.JUMP_INSIDE);
+                        BehaviorTriggerTypes.triggerBehaviors(self, living, BehaviorTriggerTypes.JUMP_INSIDE);
                     }
 
                     // trigger move
                     if (living.getDeltaMovement().horizontal().length() > 1e-7) {
-                        BehaviorTriggers.triggerBehaviors(self, living, BehaviorTriggers.MOVE_INSIDE);
+                        BehaviorTriggerTypes.triggerBehaviors(self, living, BehaviorTriggerTypes.MOVE_INSIDE);
                     }
                 }
             }
