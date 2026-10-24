@@ -6,7 +6,7 @@ import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.level.GameType
 import xyz.crunchmunch.mods.gourmand.Gourmand
-import xyz.crunchmunch.mods.gourmand.api.GourmandAttachments
+import xyz.crunchmunch.mods.gourmand.api.GourmandEntityAttachments
 import xyz.crunchmunch.mods.gourmand.api.GourmandRegistryKeys
 
 object BehaviorTriggerTypes {
@@ -22,7 +22,7 @@ object BehaviorTriggerTypes {
 
     @JvmStatic
     fun hasAnyTrigger(entity: Entity, vararg triggerIds: ResourceKey<BehaviorTriggerType>): Boolean {
-        val behaviors = entity.getAttachedOrElse(GourmandAttachments.BEHAVIORS, emptyList())
+        val behaviors = entity.getAttachedOrElse(GourmandEntityAttachments.BEHAVIORS, emptyList())
 
         for (behaviorKey in behaviors) {
             val behavior = entity.registryAccess().getOrThrow(behaviorKey)
@@ -36,7 +36,7 @@ object BehaviorTriggerTypes {
 
     @JvmStatic
     fun triggerBehaviors(interactedEntity: Entity, interactingEntity: LivingEntity, trigger: ResourceKey<BehaviorTriggerType>) {
-        val behaviors = interactedEntity.getAttachedOrElse(GourmandAttachments.BEHAVIORS, emptyList())
+        val behaviors = interactedEntity.getAttachedOrElse(GourmandEntityAttachments.BEHAVIORS, emptyList())
 
         for (behaviorKey in behaviors) {
             val behavior = interactedEntity.registryAccess().getOrThrow(behaviorKey)

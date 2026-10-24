@@ -19,10 +19,7 @@ import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.Identifier
 import net.minecraft.world.InteractionResult
-import xyz.crunchmunch.mods.gourmand.api.GourmandAttachments
-import xyz.crunchmunch.mods.gourmand.api.GourmandRegistries
-import xyz.crunchmunch.mods.gourmand.api.GourmandRegistryKeys
-import xyz.crunchmunch.mods.gourmand.api.IgnoredBlockUpdateRegistry
+import xyz.crunchmunch.mods.gourmand.api.*
 import xyz.crunchmunch.mods.gourmand.api.behavior.TriggerableEntityBehavior
 import xyz.crunchmunch.mods.gourmand.api.behavior.trigger.BehaviorTriggerTypes
 import xyz.crunchmunch.mods.gourmand.api.impl.behavior.GourmandBehaviorTypes
@@ -34,7 +31,8 @@ class Gourmand : ModInitializer {
     override fun onInitialize() {
         GourmandRegistries.init()
         GourmandBehaviorTypes.init()
-        GourmandAttachments.init()
+        GourmandEntityAttachments.init()
+        GourmandLevelAttachments.init()
 
         // Dynamic registries
         DynamicRegistries.registerSynced(GourmandRegistryKeys.BEHAVIOR, TriggerableEntityBehavior.CODEC)
@@ -47,7 +45,7 @@ class Gourmand : ModInitializer {
         Registry.register(BuiltInRegistries.ENTITY_SUB_PREDICATE_TYPE, id("has_entity_tag"), HasEntityTagPredicate.CODEC)
 
         ServerPlayNetworking.registerGlobalReceiver(ModListPacket.TYPE) { packet, ctx ->
-            ctx.player().setAttached(GourmandAttachments.MOD_IDS, packet.modIdsToVersions)
+            ctx.player().setAttached(GourmandEntityAttachments.MOD_IDS, packet.modIdsToVersions)
         }
 
         ServerPlayConnectionEvents.JOIN.register { handler, _, _ ->
@@ -75,12 +73,12 @@ class Gourmand : ModInitializer {
 
                                     var count = 0
                                     for (entity in entities) {
-                                        val list = entity.getAttachedOrElse(GourmandAttachments.BEHAVIORS, listOf()).toMutableList()
+                                        val list = entity.getAttachedOrElse(GourmandEntityAttachments.BEHAVIORS, listOf()).toMutableList()
                                         if (!list.contains(behaviorId)) {
                                             list.add(behaviorId)
                                             count++
 
-                                            entity.setAttached(GourmandAttachments.BEHAVIORS, list)
+                                            entity.setAttached(GourmandEntityAttachments.BEHAVIORS, list)
                                         }
                                     }
 
@@ -106,12 +104,12 @@ class Gourmand : ModInitializer {
 
                                     var count = 0
                                     for (entity in entities) {
-                                        val list = entity.getAttachedOrElse(GourmandAttachments.BEHAVIORS, listOf()).toMutableList()
+                                        val list = entity.getAttachedOrElse(GourmandEntityAttachments.BEHAVIORS, listOf()).toMutableList()
                                         if (list.contains(behaviorId)) {
                                             list.remove(behaviorId)
                                             count++
 
-                                            entity.setAttached(GourmandAttachments.BEHAVIORS, list)
+                                            entity.setAttached(GourmandEntityAttachments.BEHAVIORS, list)
                                         }
                                     }
 
@@ -127,7 +125,7 @@ class Gourmand : ModInitializer {
                         argument("entity", EntityArgument.entity()) {
                             executes { ctx ->
                                 val entity = EntityArgument.getEntity(ctx, "entity")
-                                val behaviors = entity.getAttachedOrElse(GourmandAttachments.BEHAVIORS, emptyList())
+                                val behaviors = entity.getAttachedOrElse(GourmandEntityAttachments.BEHAVIORS, emptyList())
 
                                 if (behaviors.isNotEmpty()) {
                                     ctx.source.sendSuccess({ Component.literal("Entity ").append(entity.displayName).append(" has ${behaviors.size} behaviors:") }, false)
@@ -150,12 +148,12 @@ class Gourmand : ModInitializer {
                         executes { ctx ->
                             val player = EntityArgument.getPlayer(ctx, "player")
 
-                            if (!player.hasAttached(GourmandAttachments.MOD_IDS)) {
+                            if (!player.hasAttached(GourmandEntityAttachments.MOD_IDS)) {
                                 sendFailure(Component.empty().append(player.displayName).append(" does not have Gourmand installed!"))
                                 return@executes 0
                             }
 
-                            val mods = player.getAttachedOrThrow(GourmandAttachments.MOD_IDS)
+                            val mods = player.getAttachedOrThrow(GourmandEntityAttachments.MOD_IDS)
                             sendSystemMessage(Component.empty().append(player.displayName).append(" has ${mods.size} mods installed:"))
                             for ((modId, version) in mods) {
                                 sendSystemMessage(Component.literal(" - $modId v$version"))
