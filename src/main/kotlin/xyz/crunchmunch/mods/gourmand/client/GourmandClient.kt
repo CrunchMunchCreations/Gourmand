@@ -13,6 +13,7 @@ import xyz.crunchmunch.mods.gourmand.api.GourmandLevelAttachments
 import xyz.crunchmunch.mods.gourmand.api.IgnoredBlockUpdateRegistry
 import xyz.crunchmunch.mods.gourmand.network.clientbound.IgnoredBlockUpdateListPacket
 import xyz.crunchmunch.mods.gourmand.network.serverbound.ModListPacket
+import java.awt.Color
 
 class GourmandClient : ClientModInitializer {
     override fun onInitializeClient() {
@@ -44,17 +45,21 @@ class GourmandClient : ClientModInitializer {
                 lateinit var start: Vec3
 
                 for (point in path.points) {
-                    Gizmos.circle(point, 2f, GizmoStyle.fill(path.color))
-
                     if (!wasInit) {
                         start = point
                         wasInit = true
                         Gizmos.billboardText(id.toString(), point, TextGizmo.Style.whiteAndCentered())
+                        Gizmos.circle(point, 2.5f, GizmoStyle.fill(Color.GREEN.rgb))
                         continue
                     }
 
+                    Gizmos.circle(point, 2f, GizmoStyle.fill(path.color))
                     Gizmos.line(start, point, path.color)
                     start = point
+                }
+
+                if (path.points.isNotEmpty()) {
+                    Gizmos.circle(path.points.last(), 2.5f, GizmoStyle.fill(Color.RED.rgb))
                 }
             }
         }
