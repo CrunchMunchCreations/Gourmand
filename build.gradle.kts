@@ -30,6 +30,7 @@ dependencies {
 
     implementation(libs.fabric.kotlin)
     api(libs.brigadier.kotlin)
+    include(libs.brigadier.kotlin)
 }
 
 tasks {
