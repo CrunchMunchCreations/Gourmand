@@ -19,6 +19,7 @@ object GourmandEntityAttachments {
 
     @JvmField val MOD_IDS: AttachmentType<Map<String, String>> = AttachmentRegistry.create(Gourmand.id("mod_ids")) { builder ->
         builder.copyOnDeath()
+            .persistent(Codec.unboundedMap(Codec.STRING, Codec.STRING))
     }
 
     /**
