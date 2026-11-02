@@ -3,7 +3,13 @@ package xyz.crunchmunch.mods.gourmand.client
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelExtractionEvents
 import net.fabricmc.loader.api.FabricLoader
+import net.minecraft.gizmos.GizmoStyle
+import net.minecraft.gizmos.Gizmos
+import net.minecraft.gizmos.TextGizmo
+import net.minecraft.world.phys.Vec3
+import xyz.crunchmunch.mods.gourmand.api.GourmandLevelAttachments
 import xyz.crunchmunch.mods.gourmand.api.IgnoredBlockUpdateRegistry
 import xyz.crunchmunch.mods.gourmand.network.clientbound.IgnoredBlockUpdateListPacket
 import xyz.crunchmunch.mods.gourmand.network.serverbound.ModListPacket
@@ -27,6 +33,29 @@ class GourmandClient : ClientModInitializer {
         ClientPlayNetworking.registerGlobalReceiver(IgnoredBlockUpdateListPacket.TYPE) { packet, ctx ->
             for (state in packet.states) {
                 IgnoredBlockUpdateRegistry.registerState(state)
+            }
+        }
+
+        LevelExtractionEvents.END_EXTRACTION.register { context ->
+            val debugPaths = context.level().getAttached(GourmandLevelAttachments.DEBUG_PATHS) ?: return@register
+
+            for ((id, path) in debugPaths) {
+                var wasInit = false
+                lateinit var start: Vec3
+
+                for (point in path.points) {
+                    Gizmos.circle(point, 2f, GizmoStyle.fill(path.color))
+
+                    if (!wasInit) {
+                        start = point
+                        wasInit = true
+                        Gizmos.billboardText(id.toString(), point, TextGizmo.Style.whiteAndCentered())
+                        continue
+                    }
+
+                    Gizmos.line(start, point, path.color)
+                    start = point
+                }
             }
         }
     }
