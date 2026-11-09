@@ -17,7 +17,7 @@ public abstract class EntityRendererMixin {
         @At(value = "FIELD", target = "Lnet/minecraft/world/entity/Entity;xOld:D", opcode = Opcodes.GETFIELD),
     }, slice = @Slice(to = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isInvisible()Z")))
     private double useVehicleAttachmentAsPositionRefXOld(Entity instance, Operation<Double> original) {
-        if (instance.hasAttached(GourmandEntityAttachments.TRACK_VEHICLE) && instance.isVehicle()) {
+        if (instance.hasAttached(GourmandEntityAttachments.TRACK_VEHICLE) && instance.isPassenger()) {
             var vehicle = instance.getVehicle();
 
             return vehicle.xOld + ((EntityAccessor) vehicle).callGetPassengerAttachmentPoint(instance, ((EntityAccessor) vehicle).gourmand$getDimensions(), 1f).x();
@@ -30,7 +30,7 @@ public abstract class EntityRendererMixin {
         @At(value = "FIELD", target = "Lnet/minecraft/world/entity/Entity;yOld:D", opcode = Opcodes.GETFIELD),
     }, slice = @Slice(to = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isInvisible()Z")))
     private double useVehicleAttachmentAsPositionRefYOld(Entity instance, Operation<Double> original) {
-        if (instance.hasAttached(GourmandEntityAttachments.TRACK_VEHICLE) && instance.isVehicle()) {
+        if (instance.hasAttached(GourmandEntityAttachments.TRACK_VEHICLE) && instance.isPassenger()) {
             var vehicle = instance.getVehicle();
 
             return vehicle.yOld + ((EntityAccessor) vehicle).callGetPassengerAttachmentPoint(instance, ((EntityAccessor) vehicle).gourmand$getDimensions(), 1f).y();
@@ -43,7 +43,7 @@ public abstract class EntityRendererMixin {
         @At(value = "FIELD", target = "Lnet/minecraft/world/entity/Entity;zOld:D", opcode = Opcodes.GETFIELD),
     }, slice = @Slice(to = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isInvisible()Z")))
     private double useVehicleAttachmentAsPositionRefZOld(Entity instance, Operation<Double> original) {
-        if (instance.hasAttached(GourmandEntityAttachments.TRACK_VEHICLE) && instance.isVehicle()) {
+        if (instance.hasAttached(GourmandEntityAttachments.TRACK_VEHICLE) && instance.isPassenger()) {
             var vehicle = instance.getVehicle();
 
             return vehicle.zOld + ((EntityAccessor) vehicle).callGetPassengerAttachmentPoint(instance, ((EntityAccessor) vehicle).gourmand$getDimensions(), 1f).z();
@@ -56,7 +56,7 @@ public abstract class EntityRendererMixin {
         @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;getX()D"),
     }, slice = @Slice(to = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isInvisible()Z")))
     private double useVehicleAttachmentAsPositionRefX(Entity instance, Operation<Double> original) {
-        if (instance.hasAttached(GourmandEntityAttachments.TRACK_VEHICLE) && instance.isVehicle()) {
+        if (instance.hasAttached(GourmandEntityAttachments.TRACK_VEHICLE) && instance.isPassenger()) {
             var vehicle = instance.getVehicle();
 
             return vehicle.getX() + ((EntityAccessor) vehicle).callGetPassengerAttachmentPoint(instance, ((EntityAccessor) vehicle).gourmand$getDimensions(), 1f).x();
@@ -69,7 +69,7 @@ public abstract class EntityRendererMixin {
         @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;getY()D"),
     }, slice = @Slice(to = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isInvisible()Z")))
     private double useVehicleAttachmentAsPositionRefY(Entity instance, Operation<Double> original) {
-        if (instance.hasAttached(GourmandEntityAttachments.TRACK_VEHICLE) && instance.isVehicle()) {
+        if (instance.hasAttached(GourmandEntityAttachments.TRACK_VEHICLE) && instance.isPassenger()) {
             var vehicle = instance.getVehicle();
 
             return vehicle.getY() + ((EntityAccessor) vehicle).callGetPassengerAttachmentPoint(instance, ((EntityAccessor) vehicle).gourmand$getDimensions(), 1f).y();
@@ -82,7 +82,7 @@ public abstract class EntityRendererMixin {
         @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;getZ()D"),
     }, slice = @Slice(to = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isInvisible()Z")))
     private double useVehicleAttachmentAsPositionRefZ(Entity instance, Operation<Double> original) {
-        if (instance.hasAttached(GourmandEntityAttachments.TRACK_VEHICLE) && instance.isVehicle()) {
+        if (instance.hasAttached(GourmandEntityAttachments.TRACK_VEHICLE) && instance.isPassenger()) {
             var vehicle = instance.getVehicle();
 
             return vehicle.getZ() + ((EntityAccessor) vehicle).callGetPassengerAttachmentPoint(instance, ((EntityAccessor) vehicle).gourmand$getDimensions(), 1f).z();
