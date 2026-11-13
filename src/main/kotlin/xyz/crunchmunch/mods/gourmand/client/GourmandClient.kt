@@ -38,7 +38,7 @@ class GourmandClient : ClientModInitializer {
         }
 
         LevelExtractionEvents.END_EXTRACTION.register { context ->
-            val debugPaths = context.level().getAttached(GourmandLevelAttachments.DEBUG_PATHS) ?: return@register
+            val debugPaths = context.level().getAttached(GourmandLevelAttachments.DEBUG_PATHS) ?: emptyMap()
 
             for ((id, path) in debugPaths) {
                 var wasInit = false
@@ -61,6 +61,13 @@ class GourmandClient : ClientModInitializer {
                 if (path.points.isNotEmpty()) {
                     Gizmos.circle(path.points.last(), 2.5f, GizmoStyle.fill(Color.RED.rgb))
                 }
+            }
+
+            val debugAreas = context.level().getAttached(GourmandLevelAttachments.DEBUG_AREAS) ?: emptyMap()
+
+            for ((id, area) in debugAreas) {
+                Gizmos.cuboid(area.area, GizmoStyle.stroke(area.color, 8f))
+                Gizmos.billboardText("$id", area.area.minPosition, TextGizmo.Style.whiteAndCentered())
             }
         }
     }

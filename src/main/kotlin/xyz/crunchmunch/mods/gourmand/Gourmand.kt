@@ -33,6 +33,7 @@ class Gourmand : ModInitializer {
         GourmandBehaviorTypes.init()
         GourmandEntityAttachments.init()
         GourmandLevelAttachments.init()
+        GourmandPermissions.init()
 
         // Dynamic registries
         DynamicRegistries.registerSynced(GourmandRegistryKeys.BEHAVIOR, TriggerableEntityBehavior.CODEC)
