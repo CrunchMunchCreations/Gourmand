@@ -14,8 +14,6 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking
 import net.minecraft.commands.Commands
 import net.minecraft.commands.arguments.EntityArgument
 import net.minecraft.commands.arguments.ResourceKeyArgument
-import net.minecraft.core.Registry
-import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.Identifier
 import net.minecraft.world.InteractionResult
@@ -23,7 +21,6 @@ import xyz.crunchmunch.mods.gourmand.api.*
 import xyz.crunchmunch.mods.gourmand.api.behavior.TriggerableEntityBehavior
 import xyz.crunchmunch.mods.gourmand.api.behavior.trigger.BehaviorTriggerTypes
 import xyz.crunchmunch.mods.gourmand.api.impl.behavior.GourmandBehaviorTypes
-import xyz.crunchmunch.mods.gourmand.api.impl.predicate.HasEntityTagPredicate
 import xyz.crunchmunch.mods.gourmand.network.clientbound.IgnoredBlockUpdateListPacket
 import xyz.crunchmunch.mods.gourmand.network.serverbound.ModListPacket
 
@@ -41,9 +38,6 @@ class Gourmand : ModInitializer {
         // Network packets
         PayloadTypeRegistry.serverboundPlay().registerLarge(ModListPacket.TYPE, ModListPacket.CODEC, 1_000_000)
         PayloadTypeRegistry.clientboundPlay().register(IgnoredBlockUpdateListPacket.TYPE, IgnoredBlockUpdateListPacket.CODEC)
-
-        // Custom stuff
-        Registry.register(BuiltInRegistries.ENTITY_SUB_PREDICATE_TYPE, id("has_entity_tag"), HasEntityTagPredicate.CODEC)
 
         ServerPlayNetworking.registerGlobalReceiver(ModListPacket.TYPE) { packet, ctx ->
             ctx.player().setAttached(GourmandEntityAttachments.MOD_IDS, packet.modIdsToVersions)
