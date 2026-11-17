@@ -24,6 +24,10 @@ object GourmandEntityAttachments {
             .persistent(Codec.unboundedMap(Codec.STRING, Codec.STRING))
     }
 
+    @JvmField val HAS_GOURMAND: AttachmentType<Unit> = AttachmentRegistry.create(Gourmand.id("exists")) { builder ->
+        builder.copyOnDeath()
+    }
+
     /**
      * Entities with this attachment set to false will not collide with boats, and likewise boats will not collide with each other if this attachment is false.
      */

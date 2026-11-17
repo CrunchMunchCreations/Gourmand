@@ -46,6 +46,7 @@ class Gourmand : ModInitializer {
         ServerPlayConnectionEvents.JOIN.register { handler, _, _ ->
             if (ServerPlayNetworking.canSend(handler, IgnoredBlockUpdateListPacket.TYPE)) {
                 ServerPlayNetworking.send(handler.player, IgnoredBlockUpdateListPacket(IgnoredBlockUpdateRegistry.states))
+                handler.player.setAttached(GourmandEntityAttachments.HAS_GOURMAND, Unit)
             }
         }
 
