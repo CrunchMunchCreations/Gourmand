@@ -20,7 +20,7 @@ public abstract class EntityMixin implements AttachmentTarget {
     @Shadow public abstract AABB getBoundingBox();
     @Shadow public abstract Level level();
 
-    @Inject(method = "baseTick", at = @At("HEAD"))
+    @Inject(method = "commonTick", at = @At("HEAD"))
     private void checkCollidingEntities(CallbackInfo ci) {
         var self = (Entity) (Object) this;
 
