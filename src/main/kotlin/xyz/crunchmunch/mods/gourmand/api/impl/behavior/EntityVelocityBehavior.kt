@@ -10,10 +10,11 @@ import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.phys.Vec3
 import xyz.crunchmunch.mods.gourmand.api.behavior.EntityBehavior
 
-data class EntityVelocityBehavior(
+@JvmRecord
+data class EntityVelocityBehavior @JvmOverloads constructor (
     val velocity: Vec3,
-    val mode: Mode,
-    val transformSpace: TransformSpace,
+    val mode: Mode = Mode.ADD,
+    val transformSpace: TransformSpace = TransformSpace.WORLD,
 ) : EntityBehavior {
     override fun handle(
         interactedEntity: Entity,
@@ -27,7 +28,8 @@ data class EntityVelocityBehavior(
         }
     }
 
-    override val codec: MapCodec<out EntityBehavior> = CODEC
+    override val codec: MapCodec<out EntityBehavior>
+        get() = CODEC
 
     companion object {
         @JvmField val CODEC: MapCodec<EntityVelocityBehavior> = RecordCodecBuilder.mapCodec { instance ->

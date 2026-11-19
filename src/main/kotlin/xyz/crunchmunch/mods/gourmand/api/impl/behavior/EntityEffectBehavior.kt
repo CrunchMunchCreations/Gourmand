@@ -10,13 +10,14 @@ import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.LivingEntity
 import xyz.crunchmunch.mods.gourmand.api.behavior.EntityBehavior
 
-data class EntityEffectBehavior(
+@JvmRecord
+data class EntityEffectBehavior @JvmOverloads constructor (
     val effect: Holder<MobEffect>,
     val durationTicks: Int,
-    val amplifier: Int,
-    val isAmbient: Boolean,
-    val isHidden: Boolean,
-    val shouldShowIcon: Boolean,
+    val amplifier: Int = 0,
+    val isAmbient: Boolean = false,
+    val isHidden: Boolean = false,
+    val shouldShowIcon: Boolean = true,
 ) : EntityBehavior {
     override fun handle(interactedEntity: Entity, interactingEntity: LivingEntity) {
         interactingEntity.addEffect(
@@ -30,7 +31,8 @@ data class EntityEffectBehavior(
             ), interactedEntity)
     }
 
-    override val codec: MapCodec<out EntityBehavior> = CODEC
+    override val codec: MapCodec<out EntityBehavior>
+        get() = CODEC
 
     companion object {
         @JvmField val CODEC: MapCodec<EntityEffectBehavior> = RecordCodecBuilder.mapCodec { instance ->

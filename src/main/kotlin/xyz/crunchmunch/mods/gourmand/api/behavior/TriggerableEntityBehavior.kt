@@ -6,10 +6,10 @@ import net.minecraft.world.level.GameType
 import xyz.crunchmunch.mods.gourmand.api.behavior.trigger.BehaviorTrigger
 
 @JvmRecord
-data class TriggerableEntityBehavior(
+data class TriggerableEntityBehavior @JvmOverloads constructor (
     val behavior: EntityBehavior,
     val trigger: BehaviorTrigger,
-    val validGameTypes: List<GameType>,
+    val validGameTypes: List<GameType> = GameType.entries.toList(),
 ) {
     companion object {
         @JvmField
@@ -19,7 +19,7 @@ data class TriggerableEntityBehavior(
                     .forGetter(TriggerableEntityBehavior::behavior),
                 BehaviorTrigger.CODEC.fieldOf("trigger")
                     .forGetter(TriggerableEntityBehavior::trigger),
-                GameType.CODEC.listOf().optionalFieldOf("valid_gamemodes", GameType.entries)
+                GameType.CODEC.listOf().optionalFieldOf("valid_gamemodes", GameType.entries.toList())
                     .forGetter(TriggerableEntityBehavior::validGameTypes),
             )
                 .apply(instance, ::TriggerableEntityBehavior)
